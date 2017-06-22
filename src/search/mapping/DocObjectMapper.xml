@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="search.dao.DocObjectMapper">
+	<resultMap id="BaseResultMap" type="search.pojo.DocObject">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="authors" property="authors" jdbcType="VARCHAR" />
+		<result column="doc_abstract" property="docAbstract" jdbcType="VARCHAR" />
+		<result column="ref" property="ref" jdbcType="VARCHAR" />
+		<result column="keywords" property="keywords" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, authors, doc_abstract, ref, keywords
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from doc
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from doc
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="search.pojo.DocObject">
+		insert into doc (id, name,
+		authors,
+		doc_abstract, ref, keywords
+		)
+		values (#{id,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{authors,jdbcType=VARCHAR},
+		#{docAbstract,jdbcType=VARCHAR}, #{ref,jdbcType=VARCHAR},
+		#{keywords,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="search.pojo.DocObject">
+		<!-- 获取自增的主键 -->
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			select
+			LAST_INSERT_ID() as id
+		</selectKey>
+		insert into doc
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="authors != null">
+				authors,
+			</if>
+			<if test="docAbstract != null">
+				doc_abstract,
+			</if>
+			<if test="ref != null">
+				ref,
+			</if>
+			<if test="keywords != null">
+				keywords,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="authors != null">
+				#{authors,jdbcType=VARCHAR},
+			</if>
+			<if test="docAbstract != null">
+				#{docAbstract,jdbcType=VARCHAR},
+			</if>
+			<if test="ref != null">
+				#{ref,jdbcType=VARCHAR},
+			</if>
+			<if test="keywords != null">
+				#{keywords,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="search.pojo.DocObject">
+		update doc
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="authors != null">
+				authors = #{authors,jdbcType=VARCHAR},
+			</if>
+			<if test="docAbstract != null">
+				doc_abstract = #{docAbstract,jdbcType=VARCHAR},
+			</if>
+			<if test="ref != null">
+				ref = #{ref,jdbcType=VARCHAR},
+			</if>
+			<if test="keywords != null">
+				keywords = #{keywords,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="search.pojo.DocObject">
+		update doc
+		set name
+		= #{name,jdbcType=VARCHAR},
+		authors = #{authors,jdbcType=VARCHAR},
+		doc_abstract = #{docAbstract,jdbcType=VARCHAR},
+		ref =
+		#{ref,jdbcType=VARCHAR},
+		keywords = #{keywords,jdbcType=VARCHAR}
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 自定义开始 -->
+	<!-- 取出所有的tf_idf -->
+	<select id="selectAllDoc" resultMap="BaseResultMap">
+		select * from doc
+	</select>
+</mapper>

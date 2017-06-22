@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="search.dao.TFIDFObjectMapper">
+	<resultMap id="BaseResultMap" type="search.pojo.TFIDFObject">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="keyword" property="keyword" jdbcType="VARCHAR" />
+		<result column="doc_id" property="docId" jdbcType="INTEGER" />
+		<result column="tfidf" property="tfidf" jdbcType="REAL" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, keyword, doc_id, tfidf
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from tf_idf
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from tf_idf
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="search.pojo.TFIDFObject">
+		insert into tf_idf (id,
+		keyword, doc_id,
+		tfidf)
+		values (#{id,jdbcType=INTEGER},
+		#{keyword,jdbcType=VARCHAR},
+		#{docId,jdbcType=INTEGER},
+		#{tfidf,jdbcType=REAL})
+	</insert>
+	<insert id="insertSelective" parameterType="search.pojo.TFIDFObject">
+		insert into tf_idf
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="keyword != null">
+				keyword,
+			</if>
+			<if test="docId != null">
+				doc_id,
+			</if>
+			<if test="tfidf != null">
+				tfidf,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="keyword != null">
+				#{keyword,jdbcType=VARCHAR},
+			</if>
+			<if test="docId != null">
+				#{docId,jdbcType=INTEGER},
+			</if>
+			<if test="tfidf != null">
+				#{tfidf,jdbcType=REAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="search.pojo.TFIDFObject">
+		update tf_idf
+		<set>
+			<if test="keyword != null">
+				keyword = #{keyword,jdbcType=VARCHAR},
+			</if>
+			<if test="docId != null">
+				doc_id = #{docId,jdbcType=INTEGER},
+			</if>
+			<if test="tfidf != null">
+				tfidf = #{tfidf,jdbcType=REAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="search.pojo.TFIDFObject">
+		update tf_idf
+		set
+		keyword = #{keyword,jdbcType=VARCHAR},
+		doc_id =
+		#{docId,jdbcType=INTEGER},
+		tfidf = #{tfidf,jdbcType=REAL}
+		where id =
+		#{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 自定义开始 -->
+	<!-- 取出所有的tf_idf -->
+	<select id="selectAllTFIDF" resultMap="BaseResultMap">
+		select * from tf_idf
+	</select>
+</mapper>
